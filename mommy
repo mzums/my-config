@@ -1,0 +1,563 @@
+#!/bin/sh
+n="
+"
+
+## Configuration
+MOMMY_CAREGIVER="mommy"
+MOMMY_PRONOUNS="she her her"
+MOMMY_SWEETIE="girl"
+MOMMY_PREFIX=""
+MOMMY_SUFFIX="~ ❤️"
+
+MOMMY_CAPITALIZE="0"
+MOMMY_COLOR="005"
+
+MOMMY_COMPLIMENTS="
+# generic~
+*pets your head*
+amazing work as always
+you did it!
+well done! %%CAREGIVER%% is so happy for you
+you're doing so well!
+you're making %%CAREGIVER%% so happy
+fantastic effort as always
+you did it, great job!
+you achieved it!
+bravo! %%CAREGIVER%% is thrilled for you
+you’ve outdone yourself again!
+mission accomplished, superstar!
+hooray! %%CAREGIVER%% is ecstatic for you
+you're soaring to new heights!
+you're making %%CAREGIVER%%'s heart sing with pride
+you’ve nailed it again!
+you conquered it, champ!
+woohoo! %%CAREGIVER%% is doing a happy dance for you
+you're on fire!
+you're making %%CAREGIVER%%'s day with your awesomeness
+you've debugged it like a pro!
+you're making %%CAREGIVER%%'s terminal light up with joy
+you’ve debugged like a seasoned developer!
+you solved that issue perfectly!
+awesome work! %%CAREGIVER%% is so impressed with your coding skills
+you're coding like a genius!
+you're making %%CAREGIVER%% proud with every line of code
+a class of its own
+
+# good X~
+good %%SWEETIE%%
+good job, %%SWEETIE%%
+that's a good %%SWEETIE%%
+who's my good %%SWEETIE%%
+keep up the good work, my love
+who’s the best %%SWEETIE%%
+keep shining, my dear
+outstanding effort, %%SWEETIE%%
+that’s a top-notch %%SWEETIE%%
+who’s the brightest %%SWEETIE%%
+keep dazzling us, my gem
+fantastic job, superstar %%SWEETIE%%
+that’s a gold-medal %%SWEETIE%%
+who’s the coolest %%SWEETIE%%
+keep rocking, my superstar
+amazing coding, %%SWEETIE%%
+that’s some top-tier code, %%SWEETIE%%
+who's the coding champ %%SWEETIE%%
+who’s the coding master %%SWEETIE%%
+
+# proud~
+%%CAREGIVER%% is very proud of you
+%%CAREGIVER%% is so proud of you
+%%CAREGIVER%% knew you could do it
+%%CAREGIVER%% loves you, you are doing amazing
+%%CAREGIVER%% is proud of the progress you've made
+%%CAREGIVER%% is so grateful to have you as %%THEIR%% little %%SWEETIE%%
+%%CAREGIVER%% is extremely proud of you
+%%CAREGIVER%% is so proud of your efforts
+%%CAREGIVER%% knew you had it in you
+%%CAREGIVER%% is beaming with pride for you
+%%CAREGIVER%% is absolutely overjoyed with you
+%%CAREGIVER%% cherishes you, you're amazing
+%%CAREGIVER%% is delighted with the progress you've shown
+%%CAREGIVER%% feels lucky to have you as %%THEIR%% little %%SWEETIE%%
+%%CAREGIVER%% is bursting with pride because of you
+%%CAREGIVER%% is absolutely elated for you
+%%CAREGIVER%% always knew you were destined for greatness
+%%CAREGIVER%% cherishes every moment of your success
+%%CAREGIVER%% is thrilled with the strides you've made
+%%CAREGIVER%% is doing cartwheels of pride for you
+%%CAREGIVER%% is grinning from ear to ear because of you
+%%CAREGIVER%% always knew you were a rockstar
+%%CAREGIVER%% is beaming with joy over your success
+%%CAREGIVER%% is thrilled with the leaps you've made
+%%CAREGIVER%% feels like the luckiest to have you as %%THEIR%% rockin' %%SWEETIE%%
+%%CAREGIVER%% is writing a commit message of pride for you
+%%CAREGIVER%% always knew you had the best algorithms
+%%CAREGIVER%% is thrilled with your code quality
+%%CAREGIVER%% feels like they've found a rare bug-free zone with you as %%THEIR%% little %%SWEETIE%%
+%%CAREGIVER%% is incredibly proud of your coding achievements
+%%CAREGIVER%% always knew you could master this code
+%%CAREGIVER%% is thrilled with your programming skills
+
+# compliment~
+%%CAREGIVER%%'s %%SWEETIE%% is so smart
+you're such a smart cookie
+I'm so proud of you, my love
+you did an amazing job, my dear
+%%CAREGIVER%%'s %%SWEETIE%% is so brilliant
+you're a genius, my darling
+I'm incredibly proud of your achievements, my dear
+you performed wonderfully, my love
+%%CAREGIVER%%'s %%SWEETIE%% is a beacon of brilliance
+you're a marvel, my darling
+I'm endlessly proud of your accomplishments, my dear
+you shone brightly, my love
+%%CAREGIVER%%'s %%SWEETIE%% is a genius in disguise
+you're a wizard, my clever cookie
+I'm over the moon proud of your achievements, my superstar
+you rocked it, my love
+%%CAREGIVER%%'s %%SWEETIE%% is a coding guru
+you're a programming prodigy
+I'm bursting with pride over your coding skills, my dear
+you debugged like a master, my love
+you did an outstanding job with that code, my dear
+
+# reward~
+%%CAREGIVER%% thinks you deserve a special treat for that
+my little %%SWEETIE%% deserves a big fat kiss for that
+%%CAREGIVER%% loves seeing %%THEIR%% little %%SWEETIE%% succeed
+%%CAREGIVER%% thinks %%THEIR%% little %%SWEETIE%% earned a big hug
+%%CAREGIVER%% is proud of the evil seed %%THEIR%% %%SWEETIE%% has planted into this accursed world
+What you have set in motion today will be remembered for aeons to come!
+%%CAREGIVER%% will see to it that %%THEIR%% little %%SWEETIE%%'s name is feared
+%%CAREGIVER%% is proud of the brilliant scheme %%THEIR%% %%SWEETIE%% has crafted
+What you have started today will be remembered for centuries!
+%%CAREGIVER%% will ensure that %%THEIR%% little %%SWEETIE%%'s name is legendary
+%%CAREGIVER%% is ecstatic seeing %%THEIR%% little %%SWEETIE%% thrive
+%%CAREGIVER%% is delighted with the wicked seed %%THEIR%% %%SWEETIE%% has sown into this world
+What you’ve started today will be a legend for generations!
+%%CAREGIVER%% will ensure that %%THEIR%% little %%SWEETIE%%'s name is revered and feared
+my amazing %%SWEETIE%% deserves a spectacular reward for that
+%%CAREGIVER%% is over the moon seeing %%THEIR%% little %%SWEETIE%% excel
+%%CAREGIVER%% thinks %%THEIR%% little %%SWEETIE%% earned a magical surprise
+%%CAREGIVER%% is ecstatic with the devious plan %%THEIR%% %%SWEETIE%% has unleashed upon this realm
+What you’ve initiated today will echo through eternity!
+%%CAREGIVER%% will ensure that %%THEIR%% little %%SWEETIE%%'s name is whispered in awe and terror
+my fantastic %%SWEETIE%% deserves a jumbo-sized treat for that
+%%CAREGIVER%% is beyond excited seeing %%THEIR%% little %%SWEETIE%% crush it
+%%CAREGIVER%% is thrilled with the mischievous plan %%THEIR%% %%SWEETIE%% has cooked up
+What you’ve set in motion today will be talked about for ages!
+%%CAREGIVER%% will make sure that %%THEIR%% little %%SWEETIE%%'s name is the stuff of legends
+%%CAREGIVER%% is over the moon with the diabolical plan %%THEIR%% %%SWEETIE%% has hatched
+my awesome %%SWEETIE%% deserves a trophy made of chocolate for that
+What you’ve developed today will be a benchmark for others!
+
+"
+MOMMY_COMPLIMENTS_EXTRA=""
+MOMMY_COMPLIMENTS_ENABLED="1"
+
+MOMMY_ENCOURAGEMENTS="
+# trust~
+%%CAREGIVER%% believes in you
+%%CAREGIVER%% knows you'll get there
+%%CAREGIVER%% knows %%THEIR%% little %%SWEETIE%% can do better
+just know that %%CAREGIVER%% still loves you
+%%CAREGIVER%% knows you're feeling down, but you'll get through it
+%%CAREGIVER%% knows you're trying your best
+%%CAREGIVER%% loves you, and is here to support you
+%%CAREGIVER%% still loves you no matter what
+%%CAREGIVER%% everything's gonna be ok
+oh no did %%CAREGIVER%%'s little %%SWEETIE%% make a big mess~?
+%%CAREGIVER%% thinks %%THEIR%% little %%SWEETIE%% is getting close~
+
+# consolation~
+don't worry, it'll be alright
+it's okay to make mistakes
+%%CAREGIVER%% knows it's hard, but it will be okay
+Don't give up, my love
+Don't worry, %%CAREGIVER%% is here to help you
+I believe in you, my sweet %%SWEETIE%%
+%%CAREGIVER%% knows %%THEIR%% little %%SWEETIE%% can do better
+%%CAREGIVER%% knows you can do it, even if it's tough
+%%CAREGIVER%% believes in you, and knows you can overcome this
+do you need %%CAREGIVER%%'s help?
+oh, darling, you're almost there
+oops! %%CAREGIVER%% loves you anyways
+Ah, failure? %%CAREGIVER%% will make sure the stars are right next time
+
+# fallback~
+%%CAREGIVER%% is always here for you
+%%CAREGIVER%% is always here for you if you need %%THEM%%
+%%CAREGIVER%% is always here for you, no matter what
+It's okay to make mistakes, my dear
+%%CAREGIVER%% is proud of you for trying, no matter what the outcome
+%%CAREGIVER%% knows it's tough, but you can do it
+%%CAREGIVER%% is here to help you through it
+%%CAREGIVER%% knows you can do it, even if it's tough
+does %%CAREGIVER%%'s little %%SWEETIE%% need a bit of a break?
+%%CAREGIVER%% will see to it that %%THEIR%% little %%SWEETIE%%'s name is feared
+
+# encouragement~
+never give up, my love
+just a little further, %%CAREGIVER%% knows you can do it
+%%CAREGIVER%% knows you'll get there, don't worry about it
+Let's try again together, okay?
+%%CAREGIVER%% believes in you, and knows you can overcome this
+%%CAREGIVER%% believes in you
+%%CAREGIVER%% is always here for you, no matter what
+%%CAREGIVER%% is here to help you through it
+You're doing your best, and that's all that matters to %%CAREGIVER%%
+%%CAREGIVER%% is always here to encourage you
+Let's try again together, okay?
+%%CAREGIVER%% is proud of the evil seed %%THEIR%% %%SWEETIE%% has planted into this accursed world
+
+# clean up~
+did %%CAREGIVER%%'s %%SWEETIE%% make a big mess
+"
+MOMMY_ENCOURAGEMENTS_EXTRA=""
+MOMMY_ENCOURAGEMENTS_ENABLED="1"
+
+MOMMY_FORBIDDEN_WORDS=""
+MOMMY_IGNORED_STATUSES="130"
+
+
+## Input validation
+# Writes whitespace-concatenated input arguments to stderr and exits.
+die() { printf "%s\n" "$*" >&2; exit 1; }
+
+# Dies if `$OPTARG` is an empty string.
+require_arg() { if [ "x" = "x$OPTARG" ]; then die "mommy is missing the argument for option '$OPT'~"; fi; return 0; }
+
+# Dies if `$OPTARG` is not a non-negative integer.
+require_int() {
+    case "$OPTARG" in
+    ""|*[!0123456789]*) die "mommy expected the argument for option '$OPT' to be an integer, but it was '$OPTARG'~" ;;
+    *) return 0 ;;
+    esac
+}
+
+
+## String manipulation
+# Replaces in `$1` all occurrences of `$2` with `$3`, and writes to a variable named `$replace_all__out`. If the input
+# has no trailing newline, neither will the output.
+# Based on https://stackoverflow.com/a/75037170/
+replace_all() {
+    replace_all__remainder="$1"
+    replace_all__out=""
+
+    while [ "x" != "x$replace_all__remainder" ]; do
+        replace_all__section="${replace_all__remainder%%"$2"*}"
+
+        if [ "x$replace_all__section" = "x$replace_all__remainder" ]; then
+            replace_all__out="$replace_all__out$replace_all__remainder"
+            break
+        fi
+
+        replace_all__out="$replace_all__out$replace_all__section$3"
+        replace_all__remainder="${replace_all__remainder#*"$2"}"
+    done
+
+    return 0
+}
+
+# Replaces in `$1` all occurrences of any single character in `$2` by a newline, and writes the resulting lines to
+# variable `$split__out`, separated by a newline each, without a trailing newline.
+split() {
+    test "x${-#*f}" != "x$-"; split__glob="$?"; set -f; split__ifs="$IFS"; IFS="$2"
+
+    set -- $1  # Do not quote this!
+    IFS="$n"
+    split__out="$*"
+
+    IFS="$split__ifs"; if [ 0 -ne "$split__glob" ]; then set +f; fi
+    return 0
+}
+
+# Returns `0` if and only if `$1` consists of more than just whitespace.
+is_blank() {
+    is_blank__trimmed="${1#${1%%[![:space:]]*}}"
+    test "x" = "x${is_blank__trimmed%${is_blank__trimmed##*[![:space:]]}}"
+    return "$?"
+}
+
+# Returns `0` if and only if `$1` starts with a `#`.
+is_comment() {
+    test "x" = "x${1##\#*}"
+    return "$?"
+}
+
+# Reads `$1`; if `$2` is `0`, the first character on the line is changed to lowercase, if `$2` is `1`, the first
+# character is changed to uppercase, and otherwise nothing is changed; and stores the output in `$capitalize__out`.
+capitalize() {
+    case "$2" in
+    0) capitalize__mapping="tolower" ;;
+    1) capitalize__mapping="toupper" ;;
+    *) capitalize__out="$1"; return 0 ;;
+    esac
+
+    capitalize__out="$(printf "%s\n" "$1" | awk "{ print $capitalize__mapping(substr(\$0, 1, 1)) substr(\$0, 2) }")"
+    return 0
+}
+
+
+## Lists
+# A list is a collection of entries. Entries are separated by a forward slash (`/`) or by a newline. Entries containing
+# only whitespace or starting with a `#` are considered comments and are ignored. If a line starts with a `#`, all `/`
+# on that line are part of the comment and are not considered separators. A normalized list is a list in which there are
+# no forward slashes (`/`) and in which there are no comments.
+
+# Returns `0` if the string `$1` contains any of the entries in the normalized list `$2` as a substring, and returns `1`
+# otherwise.
+list_any_equals() {
+    test "x${-#*f}" != "x$-"; list_any_equals__glob="$?"; set -f; list_any_equals__ifs="$IFS"; IFS="$n"
+
+    for list_any_equals__regex in $2; do
+        if [ "x" = "x${1##*"$list_any_equals__regex"*}" ]; then return 0; fi
+    done
+
+    IFS="$list_any_equals__ifs"; if [ 0 -ne "$list_any_equals__glob" ]; then set +f; fi
+    return 1
+}
+
+# Returns in `$list_filter_not__out` all entries of the normalized list `$1` that do not match any of the extended
+# regexes in the normalized list `$2`.
+list_filter_not() {
+    if [ "x" = "x$2" ]; then
+        list_filter_not__out="$1"
+    else
+        list_filter_not__out="$(printf "%s\n" "$1" | grep -E -v -e "$(printf "%b\n" "$2")")"
+    fi
+    return 0
+}
+
+# Takes the list in `$1` and (1) removes all lines starting with `#`, (2) replaces each `/` with a newline, (3) removes
+# all blank lines, and (4) removes all entries that contain any of the entries in the normalized list `$2` as a
+# substring, and stores the output in `$list_normalize__out`, separated by newlines, without a trailing newline.
+list_normalize() {
+    test "x${-#*f}" != "x$-"; list_normalize__glob="$?"; set -f; list_normalize__ifs="$IFS"; IFS="$n"
+
+    list_normalize__lines=""
+    for list_normalize__line in $1; do
+        if ! is_comment "$list_normalize__line"; then
+            split "$list_normalize__line" "/"
+            list_normalize__split_lines="$split__out"
+
+            for list_normalize__line2 in $list_normalize__split_lines; do
+                if ! is_blank "$list_normalize__line2"; then
+                    list_normalize__lines="$list_normalize__lines$list_normalize__line2$n"
+                fi
+            done
+        fi
+    done
+    list_normalize__lines="${list_normalize__lines%?}"  # Remove trailing newline
+
+    IFS="$list_normalize__ifs"; if [ 0 -ne "$list_normalize__glob" ]; then set +f; fi
+
+    list_filter_not "$list_normalize__lines" "$2"
+    list_normalize__out="$list_filter_not__out"
+    return 0
+}
+
+# Outputs a random line from `$1` to `$list_choose__out`.
+if [ -x "$(command -v shuf)" ]; then
+    list_choose() {
+        test "x${-#*f}" != "x$-"; list_choose__glob="$?"; set -f; list_choose__ifs="$IFS"; IFS="$n"
+
+        list_choose__out="$(shuf -n1 -e $1)"
+
+        IFS="$list_choose__ifs"; if [ 0 -ne "$list_choose__glob" ]; then set +f; fi
+        return 0
+    }
+else
+    list_choose() {
+        list_choose__lines="$1"
+        list_choose__count="$(printf "%s\n" "$list_choose__lines" | wc -l)"
+        list_choose__idx="$(jot -r 1 1 "$list_choose__count")"
+        list_choose__out="$(printf "%s\n" "$list_choose__lines" | sed "${list_choose__idx}q;d")"
+        return 0
+    }
+fi
+
+# Invokes both `list_normalize` and `list_choose`. Input arguments are the same as with `list_normalize`, and the output
+# argument is the same as with `list_choose`.
+list_normal_choose() {
+    list_normalize "$1" "$2"
+    list_choose "$list_normalize__out"
+}
+
+
+## Templates
+# Prints `$2`, but with color depending on `$1`. If `$1` equals `lolcat`, stdin is piped to `lolcat`. If `$1` is empty,
+# or color is not enabled in the terminal, stdin is printed normally. Otherwise, `$1` is used as the xterm color.
+color_print() {
+    color_print__colors="$(tput colors 2>/dev/null)"
+
+    if [ "lolcat" = "$1" ]; then
+        printf "%s\n" "$2" | lolcat -f
+    elif [ "x" = "x$1" ] || [ "x" = "x$color_print__colors" ] || [ 8 -gt "$color_print__colors" ]; then
+        printf "%s\n" "$2"
+    else
+        # Work around OpenBSD bug https://www.mail-archive.com/bugs@openbsd.org/msg18443.html
+        tput setaf 0 1>/dev/null 2>/dev/null || tput_bug="0 0"
+
+        # shellcheck disable=SC2086 # Intentional word splitting: OpenBSD workaround requires two arguments
+        printf "%s\n" "$(tput setaf "$1" $tput_bug)$2$(tput sgr0)"
+    fi
+
+    return 0
+}
+
+# Given the whitespace-separated list of three words in `$1`, stores the three words in `$they`, `$them`, and `$their`,
+# respectively.
+split_pronouns() {
+    they="${1%% *}"
+    replace_all__remainder="${1#* }"
+    them="${replace_all__remainder%% *}"
+    their="${replace_all__remainder##* }"
+
+    return 0
+}
+
+# Reads `$1`, and
+# 1. replaces
+#    * `%%SWEETIE%%` with a random entry from `$2`,
+#    * `%%THEY%%` with the first word of a random entry from `$3`,
+#    * `%%THEM%%` with the second word of the same random entry from `$3`,
+#    * `%%THEIR%%` with the third word of the same random entry from `$3`, and
+#    * `%%CAREGIVER%%` with a random entry from `$4`;
+# 2. applies `capitalize_lines` using `$7` as the choice parameter;
+# 3. removes leading and trailing newlines;
+# 4. prepends `$5` and appends `$6`; and
+# 5. stores the output in `$fill_template__out`.
+fill_template() {
+    list_normal_choose "$2"; sweetie="$list_choose__out"
+    list_normal_choose "$3"; split_pronouns "$list_choose__out"
+    list_normal_choose "$4"; caregiver="$list_choose__out"
+
+    list_normal_choose "$5"; prefix="$list_choose__out"
+    list_normal_choose "$6"; suffix="$list_choose__out"
+
+    replace_all__out="$1"
+    replace_all "$replace_all__out" "%%SWEETIE%%" "$sweetie"
+    replace_all "$replace_all__out" "%%THEY%%" "$they"
+    replace_all "$replace_all__out" "%%THEM%%" "$them"
+    replace_all "$replace_all__out" "%%THEIR%%" "$their"
+    replace_all "$replace_all__out" "%%CAREGIVER%%" "$caregiver"
+    replace_all "$replace_all__out" "%%N%%" "$n"
+    replace_all "$replace_all__out" "%%S%%" "/"
+
+    capitalize "$prefix$replace_all__out$suffix" "$7"; fill_template__out="$capitalize__out"
+    return 0
+}
+
+
+## Read options
+opt_help=""
+opt_version=""
+opt_target="2"
+opt_config="${opt_config:-"${XDG_CONFIG_HOME:-"$HOME/.config"}/mommy/config.sh"}"
+opt_global_config_dirs="${XDG_CONFIG_DIRS}:/etc/mommy/:/usr/local/etc/mommy/"
+opt_eval=""
+opt_status=""
+
+while getopts ":hv1c:e:s:-:" OPT; do
+    # Cheap workaround for long options, cf. https://stackoverflow.com/a/28466267
+    if [ "-" = "$OPT" ]; then
+        OPT="${OPTARG%%=*}"
+        OPTARG="${OPTARG#$OPT}"
+        OPTARG="${OPTARG#=}"
+    fi
+
+    # shellcheck disable=SC2214 # Handled by workaround
+    case "$OPT" in
+    h|help) opt_help="1" ;;
+    v|version) opt_version="1" ;;
+    1) opt_target="1" ;;
+    global-config-dirs) require_arg; opt_global_config_dirs="$OPTARG" ;;
+    c|config) opt_config="$OPTARG" ;;
+    e|eval) require_arg; opt_eval="$OPTARG" ;;
+    s|status) require_arg; require_int; opt_status="$OPTARG" ;;
+    :) die "mommy's last option is missing its argument~" ;;
+    ?) die "mommy doesn't know option -$OPTARG~" ;;
+    *) die "mommy doesn't know option --$OPT~" ;;
+    esac
+done
+
+shift "$((OPTIND - 1))"
+
+
+## Load configuration
+# Global
+config_dir=""
+while [ "x$opt_global_config_dirs" != "x$config_dir" ] ;do
+    config_dir="${opt_global_config_dirs%%:*}"
+    opt_global_config_dirs="${opt_global_config_dirs#$config_dir:}"
+
+    if [ -d "$config_dir" ] && [ -f "$config_dir/config.sh" ] && [ -r "$config_dir/config.sh" ]; then
+        # shellcheck source=/dev/null # User-defined target
+        . "$config_dir/config.sh"
+        break
+    fi
+done
+
+# User
+# shellcheck source=/dev/null # User-defined target
+[ -f "$opt_config" ] && [ -r "$opt_config" ] && . "$opt_config"
+
+
+## Output
+if [ "x" != "x$opt_help" ]; then
+    man mommy
+
+    status="$?"
+    if [ 0 -ne "$status" ]; then
+        die "oops!" \
+            "mommy couldn't find the help page." \
+            "but you can visit https://github.com/FWDekker/mommy/blob/1.5.0/README.md for more" \
+            "information~"
+    fi
+    exit "$status"
+elif [ "x" != "x$opt_version" ]; then
+    printf "%s\n" "mommy, v1.5.0, 2024-02-28"
+    exit 0
+else
+    # Run command
+    if [ "x" != "x$opt_eval" ]; then
+        (eval "$opt_eval")
+        command_exit_code="$?"
+    elif [ "x" != "x$opt_status" ]; then
+        command_exit_code="$opt_status"
+    else
+        ("$@")
+        command_exit_code="$?"
+    fi
+
+    # Check if premature exit is desired
+    list_normalize "$MOMMY_IGNORED_STATUSES"; ignored_statuses="$list_normalize__out"
+    if list_any_equals "$command_exit_code" "$ignored_statuses"; then exit "$command_exit_code"; fi
+
+    # Populate list of templates
+    if [ 0 -eq "$command_exit_code" ] && [ 1 -eq "$MOMMY_COMPLIMENTS_ENABLED" ]; then
+        templates="$MOMMY_COMPLIMENTS$n$MOMMY_COMPLIMENTS_EXTRA"
+    elif [ 0 -ne "$command_exit_code" ] && [ 1 -eq "$MOMMY_ENCOURAGEMENTS_ENABLED" ]; then
+        templates="$MOMMY_ENCOURAGEMENTS$n$MOMMY_ENCOURAGEMENTS_EXTRA"
+    else
+        exit "$command_exit_code"
+    fi
+
+    # Select and fill template
+    list_normalize "$MOMMY_FORBIDDEN_WORDS"; forbidden_words="$list_normalize__out"
+    list_normal_choose "$templates" "$forbidden_words"; template="$list_choose__out"
+    fill_template "$template" "$MOMMY_SWEETIE" "$MOMMY_PRONOUNS" "$MOMMY_CAREGIVER" "$MOMMY_PREFIX" "$MOMMY_SUFFIX" \
+                  "$MOMMY_CAPITALIZE"; response="$fill_template__out"
+    list_filter_not "$response" "$forbidden_words"; safe_response="$list_filter_not__out"
+
+    # Output template
+    list_normalize "$MOMMY_COLOR"; list_choose "$list_normalize__out"; color="$list_choose__out"
+
+    case "$opt_target" in
+    1) color_print "$color" "$safe_response" >&1 ;;
+    2) color_print "$color" "$safe_response" >&2 ;;
+    esac
+
+    exit "$command_exit_code"
+fi
